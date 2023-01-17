@@ -1,12 +1,28 @@
 import './App.css';
 import Home from './pages/Home';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Login from './pages/Login';
+import Register from './pages/Register';
+import React from 'react';
+import { useAppSelector } from './hooks';
 
 function App() {
+
+  const user = useAppSelector(state => state.user)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <Home></Home>
-      </header>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={user.loggedIn ? <Home /> : <Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </BrowserRouter>
     </div>
   );
 }
