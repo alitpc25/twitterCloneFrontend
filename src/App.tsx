@@ -18,9 +18,9 @@ function App() {
     <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={user.loggedIn ? <Home /> : <Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/" element={user.loggedIn ? <Home /> : <Login />} />
+            <Route path="/login" element={user.loggedIn ? <Home /> : <Login />} />
+            <Route path="/register" element={user.loggedIn ? <Home /> : <Register />} />
           </Routes>
         </BrowserRouter>
     </div>

@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { FunctionComponent } from "react";
+import { useAppDispatch } from "../hooks";
+import axios from "axios";
+import { updateUserInfo } from "../store/userSlice";
+import { Link } from "react-router-dom";
 
 interface LoginProps {
     
@@ -7,22 +11,53 @@ interface LoginProps {
  
 const Login: FunctionComponent<LoginProps> = () => {
 
+    const dispatch = useAppDispatch()
+
+    interface FormDataType {email:string, password: string}
+    const formData: FormDataType = {email: "",  password: ""}
+    const [requestBody, setRequestBody] = useState<FormDataType>(formData)
+
+    const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = event.target
+        setRequestBody({...requestBody, [name]: value})
+    }
+    const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        let userToLogin = {
+          email: requestBody.email,
+          password: requestBody.password
+        }
+        axios.post('/api/v1/auth/login', userToLogin)
+        .then((response) => {
+          let userState = {
+            username: response.data.username,
+            jwtToken: response.data.token,
+            loggedIn: true
+          }
+          const resultOfAction = dispatch(updateUserInfo(userState))
+          console.log(resultOfAction)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+
     return (  
         <div className="flex min-h-full items-center justify-center py-40 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form className="mt-8 space-y-6" onSubmit={submitForm} method="POST">
             <input type="hidden" name="remember" value="true" />
             <div className="-space-y-px rounded-md shadow-sm">
               <div>
                 <label htmlFor="email-address" className="sr-only">Email address</label>
-                <input id="email-address" name="email" type="email" autoComplete="email" required className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" placeholder="Email address" />
+                <input id="email-address" name="email" type="email" onChange={(e)=>inputChangeHandler(e)} autoComplete="email" required className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" placeholder="Email address" />
               </div>
               <div>
                 <label htmlFor="password" className="sr-only">Password</label>
-                <input id="password" name="password" type="password" autoComplete="current-password" required className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" placeholder="Password" />
+                <input id="password" name="password" type="password" onChange={(e)=>inputChangeHandler(e)} autoComplete="current-password" required className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" placeholder="Password" />
               </div>
             </div>
       
@@ -36,7 +71,7 @@ const Login: FunctionComponent<LoginProps> = () => {
                     <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Forgot your password?</a>
                 </div>
                 <div className="text-sm my-2">
-                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Don't have an account?</a>
+                    <Link to={"/register"}><a className="font-medium text-blue-600 hover:text-blue-500">Don't have an account?</a></Link>
                 </div>
               </div>
             </div>

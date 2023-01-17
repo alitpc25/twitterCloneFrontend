@@ -4,6 +4,7 @@ import React from "react";
 import { useAppDispatch } from "../hooks";
 import { updateUserInfo } from "../store/userSlice";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 interface RegisterProps {
     
@@ -69,7 +70,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
           </div>
   
           <div className="text-sm">
-            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Already have an account?</a>
+          <Link to={"/login"}><a className="font-medium text-blue-600 hover:text-blue-500">Already have an account?</a></Link>
           </div>
         </div>
   
