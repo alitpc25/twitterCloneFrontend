@@ -10,6 +10,7 @@ import { BsBookmarks} from "react-icons/bs"
 import { RiFileListLine } from "react-icons/ri"
 import { AiOutlineUser } from "react-icons/ai"
 import { CiCircleMore } from "react-icons/ci"
+import HomeFeed from "../components/HomeFeed";
 
 
 
@@ -37,7 +38,7 @@ function Home() {
       */
 
     return (
-        <div className="flex flex-row">
+        <div className="flex flex-row divide-x">
             <div id="leftPart" className="basis-1/4">
                 <HomeLeftColBox icon={BsTwitter} text={null}></HomeLeftColBox>
                 <HomeLeftColBox icon={TbHome2} text="Home"></HomeLeftColBox>
@@ -52,8 +53,7 @@ function Home() {
                 <HomeLeftColBox icon={FaRegUserCircle} text={user.username}></HomeLeftColBox>
             </div>
             <div id="feed" className="basis-2/4">
-                <HomeLeftColBox icon={BsTwitter} text=""></HomeLeftColBox>
-                <HomeLeftColBox icon={TbHome2} text={user.username}></HomeLeftColBox>
+                <HomeFeed></HomeFeed>
             </div>
             <div id="rightPart" className="basis-1/4">
                 <HomeLeftColBox icon={BsTwitter} text=""></HomeLeftColBox>
