@@ -9,9 +9,8 @@ const HomeFeed: FunctionComponent<HomeFeedProps> = () => {
 
     const selectedOpt: number = 2;
 
-    return (<div>
-
-        <nav className="bg-white w-full px-1.5 py-2 dark:bg-gray-900 flex-initial z-20 border-b border-gray-200 dark:border-gray-600">
+    return (<div className="fixed top-0 z-20 w-2/4 ">
+        <nav className=" bg-white mr-0.5 px-1.5 py-2 dark:bg-gray-900 flex-initial border-b border-gray-200 dark:border-gray-600">
             <div className="col-start-1 col-end-7">
                 <a href="/">
                     <div className="flex md:order-1 text-start h-12">

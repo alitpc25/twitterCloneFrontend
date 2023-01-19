@@ -17,8 +17,8 @@ import { IoMdNotificationsOutline } from "react-icons/io"
 import { MdOutlineMail } from "react-icons/md"
 import { BsBookmarks} from "react-icons/bs"
 import { RiFileListLine } from "react-icons/ri"
-import { AiOutlineUser } from "react-icons/ai"
 import { CiCircleMore } from "react-icons/ci"
+import { FiSettings } from "react-icons/fi"
 import HomeInnerPage from './pages/HomeInnerPage';
 import ProfileInnerPage from './pages/ProfileInnerPage';
 
@@ -49,17 +49,17 @@ function App() {
     <div className="App">
       <div className="flex flex-row divide-x">
             <div id="leftPart" className="basis-1/4">
-                <GlobalLeftColBox icon={BsTwitter} text={null}></GlobalLeftColBox>
-                <GlobalLeftColBox icon={TbHome2} text="Home"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={FaHashtag} text="Explore"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={IoMdNotificationsOutline} text="Notifications"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={MdOutlineMail} text="Messages"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={BsBookmarks} text="Bookmarks"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={RiFileListLine} text="Lists"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={AiOutlineUser} text="Profile"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={CiCircleMore} text="More"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={FaFeatherAlt} text="Tweet"></GlobalLeftColBox>
-                <GlobalLeftColBox icon={FaRegUserCircle} text={user.username}></GlobalLeftColBox>
+                <GlobalLeftColBox icon={BsTwitter} text={null} routeTo="/"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={TbHome2} text="Home" routeTo="/"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={FaHashtag} text="Explore" routeTo="/explore"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={IoMdNotificationsOutline} text="Notifications" routeTo="/notifications"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={MdOutlineMail} text="Messages" routeTo="/messages"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={BsBookmarks} text="Bookmarks" routeTo="/bookmarks"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={RiFileListLine} text="Lists" routeTo="/lists"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={FiSettings} text="Settings" routeTo="/settings"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={CiCircleMore} text="More" routeTo="/more"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={FaFeatherAlt} text="Tweet" routeTo="/tweet"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={FaRegUserCircle} text={user.username} routeTo="/profile"></GlobalLeftColBox>
             </div>
             <div id="feed" className="basis-2/4">
             <BrowserRouter>

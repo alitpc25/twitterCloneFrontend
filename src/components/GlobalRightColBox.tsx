@@ -2,11 +2,11 @@ import React, { KeyboardEvent } from "react";
 import { FunctionComponent } from "react";
 import { BsSearch } from "react-icons/bs"
 
-interface HomeRightColBoxProps {
+interface GlobalRightColBoxProps {
 
 }
 
-const HomeRightColBox: FunctionComponent<HomeRightColBoxProps> = () => {
+const HomeRightColBox: FunctionComponent<GlobalRightColBoxProps> = () => {
 
     const onKeyPressed = (e: KeyboardEvent<HTMLFormElement>) =>  {
         if (e.key === "Enter") {
@@ -16,6 +16,7 @@ const HomeRightColBox: FunctionComponent<HomeRightColBoxProps> = () => {
     }
 
     return (
+        <div className="h-max flex">
         <form className="flex items-center justify-center mt-2" onKeyDown={(e) => onKeyPressed(e)} tabIndex={0}>
             <label htmlFor="simple-search" className="sr-only">Search</label>
             <div className="relative w-4/5">
@@ -25,6 +26,7 @@ const HomeRightColBox: FunctionComponent<HomeRightColBoxProps> = () => {
                 <input type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
             </div>
         </form>
+        </div>
     );
 }
 
