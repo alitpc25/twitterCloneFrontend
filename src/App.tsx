@@ -8,8 +8,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import React from 'react';
 import { useAppSelector } from './hooks';
-import HomeRightColBox from './components/GlobalRightColBox';
-import HomeLeftColBox from './components/GlobalLeftColBox';
+import GlobalRightColBox from './components/GlobalRightColBox';
+import GlobalLeftColBox from './components/GlobalLeftColBox';
 import { BsTwitter } from 'react-icons/bs'
 import { TbHome2 } from 'react-icons/tb'
 import { FaHashtag, FaFeatherAlt,FaRegUserCircle } from 'react-icons/fa'
@@ -49,17 +49,17 @@ function App() {
     <div className="App">
       <div className="flex flex-row divide-x">
             <div id="leftPart" className="basis-1/4">
-                <HomeLeftColBox icon={BsTwitter} text={null}></HomeLeftColBox>
-                <HomeLeftColBox icon={TbHome2} text="Home"></HomeLeftColBox>
-                <HomeLeftColBox icon={FaHashtag} text="Explore"></HomeLeftColBox>
-                <HomeLeftColBox icon={IoMdNotificationsOutline} text="Notifications"></HomeLeftColBox>
-                <HomeLeftColBox icon={MdOutlineMail} text="Messages"></HomeLeftColBox>
-                <HomeLeftColBox icon={BsBookmarks} text="Bookmarks"></HomeLeftColBox>
-                <HomeLeftColBox icon={RiFileListLine} text="Lists"></HomeLeftColBox>
-                <HomeLeftColBox icon={AiOutlineUser} text="Profile"></HomeLeftColBox>
-                <HomeLeftColBox icon={CiCircleMore} text="More"></HomeLeftColBox>
-                <HomeLeftColBox icon={FaFeatherAlt} text="Tweet"></HomeLeftColBox>
-                <HomeLeftColBox icon={FaRegUserCircle} text={user.username}></HomeLeftColBox>
+                <GlobalLeftColBox icon={BsTwitter} text={null}></GlobalLeftColBox>
+                <GlobalLeftColBox icon={TbHome2} text="Home"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={FaHashtag} text="Explore"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={IoMdNotificationsOutline} text="Notifications"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={MdOutlineMail} text="Messages"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={BsBookmarks} text="Bookmarks"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={RiFileListLine} text="Lists"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={AiOutlineUser} text="Profile"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={CiCircleMore} text="More"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={FaFeatherAlt} text="Tweet"></GlobalLeftColBox>
+                <GlobalLeftColBox icon={FaRegUserCircle} text={user.username}></GlobalLeftColBox>
             </div>
             <div id="feed" className="basis-2/4">
             <BrowserRouter>
@@ -72,7 +72,7 @@ function App() {
             </BrowserRouter>
             </div>
             <div id="rightPart" className="basis-1/4">
-                <HomeRightColBox></HomeRightColBox>
+                <GlobalRightColBox></GlobalRightColBox>
             </div>
         </div>
     </div>
