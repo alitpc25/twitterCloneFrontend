@@ -6,7 +6,7 @@ interface GlobalRightColBoxProps {
 
 }
 
-const HomeRightColBox: FunctionComponent<GlobalRightColBoxProps> = () => {
+const GlobalRightColBox: FunctionComponent<GlobalRightColBoxProps> = () => {
 
     const onKeyPressed = (e: KeyboardEvent<HTMLFormElement>) =>  {
         if (e.key === "Enter") {
@@ -16,7 +16,7 @@ const HomeRightColBox: FunctionComponent<GlobalRightColBoxProps> = () => {
     }
 
     return (
-        <div className="h-max flex">
+        <div className="h-max flex-1">
         <form className="flex items-center justify-center mt-2" onKeyDown={(e) => onKeyPressed(e)} tabIndex={0}>
             <label htmlFor="simple-search" className="sr-only">Search</label>
             <div className="relative w-4/5">
@@ -30,4 +30,4 @@ const HomeRightColBox: FunctionComponent<GlobalRightColBoxProps> = () => {
     );
 }
 
-export default HomeRightColBox;
+export default GlobalRightColBox;

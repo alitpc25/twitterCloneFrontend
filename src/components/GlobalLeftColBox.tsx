@@ -5,12 +5,12 @@ import { IconType } from "react-icons";
 interface GlobalLeftColBoxProps {
     icon: IconType,
     text: string | null,
-    routeTo: string
+    routeTo?: string
 }
 
-const HomeLeftColBox: FunctionComponent<GlobalLeftColBoxProps> = (props: GlobalLeftColBoxProps) => {
+const GlobalLeftColBox: FunctionComponent<GlobalLeftColBoxProps> = (props: GlobalLeftColBoxProps) => {
     return (
-        <div className="h-max flex">
+        <div className="h-max flex cursor-pointer">
             <a href={props.routeTo} className="flex flex-row">
                 <div className={`box-border  ml-32 mb-1.5 w-fit p-3 rounded-full flex items-center justify-center ${props.text !== null ? 'hover:bg-gray-200' : 'hover:bg-sky-200'} ${props.text === "Tweet" ? 'bg-sky-500 hover:bg-sky-600 text-white' : ''}`}>
                     <div className={`flex-initial w-fit`}>
@@ -24,4 +24,4 @@ const HomeLeftColBox: FunctionComponent<GlobalLeftColBoxProps> = (props: GlobalL
         </div>);
 }
 
-export default HomeLeftColBox;
+export default GlobalLeftColBox;

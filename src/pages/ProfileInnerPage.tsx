@@ -1,6 +1,6 @@
 import React from "react";
 import { FunctionComponent } from "react";
-import { UserState } from "../store/userSlice";
+import { UserState } from "../redux/userSlice";
 import { BsArrowLeft } from "react-icons/bs"
 import { AiOutlineUser } from "react-icons/ai"
 

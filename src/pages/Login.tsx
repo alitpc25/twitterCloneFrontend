@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FunctionComponent } from "react";
-import { useAppDispatch } from "../hooks";
+import { useAppDispatch } from "../redux/hooks";
 import axios from "axios";
-import { updateUserInfo } from "../store/userSlice";
+import { updateUserInfo } from "../redux/userSlice";
 import { Link } from "react-router-dom";
 
 interface LoginProps {
