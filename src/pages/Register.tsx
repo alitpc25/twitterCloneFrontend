@@ -29,6 +29,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
         .then((response) => {
           let userState = {
             username: requestBody.username,
+            userId: response.data.userId,
             jwtToken: response.data.token,
             loggedIn: true
           }

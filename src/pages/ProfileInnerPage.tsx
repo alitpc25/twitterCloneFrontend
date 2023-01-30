@@ -1,14 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FunctionComponent } from "react";
 import { UserState } from "../redux/userSlice";
 import { BsArrowLeft } from "react-icons/bs"
 import { AiOutlineUser } from "react-icons/ai"
+import PostInputField from "../components/PostInputField";
+import axios from "axios";
+import { useAppSelector } from "../redux/hooks";
+import Post from "../models/Post";
 
 interface ProfileInnerPageProps {
     user: UserState
 }
 
 const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = (props: ProfileInnerPageProps) => {
+
+    const user = useAppSelector(state => state.user)
+
+    const [posts, setPosts] = useState<Post[]>([])
+
+    const getPostsByUserId = () => {
+        axios.get(`/api/v1/posts?userId=${user.userId}`, {
+            headers: {
+              'Authorization': `Bearer ${user.jwtToken}` 
+            }}).then((res) => {
+                setPosts(res.data)
+                console.log(res.data);
+            }).catch((e) => {
+                console.log(e);
+            })
+    }
+
+    useEffect(() => {
+        getPostsByUserId();
+    }, [])
+    
+
     return (<div className="">
         <nav className="h-14 items-center bg-white w-full px-1.5 py-2 dark:bg-gray-900 flex flex-row z-20 border-b border-gray-200 dark:border-gray-600">
             <div>
@@ -30,10 +56,21 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = (props: Profi
                 <button><p>Set up profile</p></button>
             </div>
         </div>
-        <div className="flex justify-start mt-4">
+        <div className="flex justify-start mt-4 mb-4">
             <p className="ml-4">{props.user.username}</p>
         </div>
-        
+        <hr className="border-1"></hr>
+        <div>
+            <PostInputField></PostInputField>
+        </div>
+        <div>
+            {posts.map(p => {
+                return <div>
+                    <img width={"250px"} src={`data:image/png;base64,${p.image}`}></img>
+                    {p.text}
+                </div>
+            })}
+        </div>
     </div>);
 }
 

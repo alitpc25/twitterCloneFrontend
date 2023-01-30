@@ -18,6 +18,7 @@ export default function MoreDropdownButton({children} : IProps) {
     const logOutUser = () => {
         dispatch(updateUserInfo({
             username:null,
+            userId:null,
             jwtToken:null,
             loggedIn:false
         }))

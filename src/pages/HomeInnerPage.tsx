@@ -1,6 +1,6 @@
 import React from "react";
 import { FunctionComponent } from "react";
-import HomeFeedInputField from "../components/HomeFeedInputField";
+import PostInputField from "../components/PostInputField";
 import HomeFeedHeader from "../components/HomeFeedHeader";
 
 interface HomeInnerPageProps {
@@ -10,7 +10,9 @@ interface HomeInnerPageProps {
 const HomeInnerPage: FunctionComponent<HomeInnerPageProps> = () => {
     return ( <div>
         <HomeFeedHeader></HomeFeedHeader>
-        <HomeFeedInputField></HomeFeedInputField>
+        <div className="mt-24">
+        <PostInputField></PostInputField>
+        </div>
         </div>
      );
 }

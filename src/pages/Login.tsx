@@ -31,6 +31,7 @@ const Login: FunctionComponent<LoginProps> = () => {
         .then((response) => {
           let userState = {
             username: response.data.username,
+            userId: response.data.userId,
             jwtToken: response.data.token,
             loggedIn: true
           }
