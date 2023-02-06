@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react";
-import { FaRegUserCircle } from 'react-icons/fa'
 import { BsImage } from "react-icons/bs"
 import "./PostInputField.css"
 import { useState } from "react"
@@ -43,6 +42,8 @@ const PostInputField: FunctionComponent<PostInputFieldProps> = () => {
             }})
         .then((res) => {
             console.log(res)
+            setText("")
+            setImage("")
         }).catch((e) => {
             console.log(e);
         })
@@ -54,12 +55,12 @@ const PostInputField: FunctionComponent<PostInputFieldProps> = () => {
                 <label htmlFor="text" className="mb-2 text-sm font-medium text-gray-900 sr-only">Tweet</label>
                 <div className="relative flex flex-row">
                     <div className="inset-y-0 left-0 flex items-start mt-4 pl-3 pointer-events-none">
-                        <FaRegUserCircle size={50} />
+                        <img className="rounded-full" width={"50px"} src={`data:image/png;base64,${user.image}`}></img>
                     </div>
-                    <div className="w-full">
+                    <div className="w-full flex flex-col">
                         {image && 
                         <img alt="not found" width={"250px"} src={image} />}
-                        <textarea value={text} onChange={handleTextareaChange} id="text" className="border-b-2 resize-y w-full h-32 p-4 pl-10 text-sm text-gray-900" placeholder="What's happening?" required />
+                        <textarea value={text} onChange={handleTextareaChange} id="text" className="mt-2 border-b-2 resize-y w-full h-32 p-4 pl-10 text-sm text-gray-900" placeholder="What's happening?" required />
                         <div>
                             <label htmlFor="file-upload" className="custom-file-upload">
                                 <div className="w-fit p-2 bg-gray-100 rounded-full m-2 cursor-pointer hover:bg-gray-200">

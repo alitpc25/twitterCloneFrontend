@@ -31,7 +31,8 @@ const Register: FunctionComponent<RegisterProps> = () => {
             username: requestBody.username,
             userId: response.data.userId,
             jwtToken: response.data.token,
-            loggedIn: true
+            loggedIn: true,
+            image: response.data.image
           }
           const resultOfAction = dispatch(updateUserInfo(userState))
           console.log(resultOfAction)

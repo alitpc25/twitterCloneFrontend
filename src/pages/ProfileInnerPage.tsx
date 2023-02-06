@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { FunctionComponent } from "react";
 import { UserState } from "../redux/userSlice";
 import { BsArrowLeft } from "react-icons/bs"
-import { AiOutlineUser } from "react-icons/ai"
 import PostInputField from "../components/PostInputField";
 import axios from "axios";
 import { useAppSelector } from "../redux/hooks";
 import Post from "../models/Post";
+import PostCard from "../components/PostCard";
+import SetUpProfileModal from "../components/SetUpProfileModal";
 
 interface ProfileInnerPageProps {
     user: UserState
@@ -15,6 +16,8 @@ interface ProfileInnerPageProps {
 const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = (props: ProfileInnerPageProps) => {
 
     const user = useAppSelector(state => state.user)
+
+    const [showModal, setShowModal] = useState(false);
 
     const [posts, setPosts] = useState<Post[]>([])
 
@@ -48,12 +51,12 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = (props: Profi
                 </a>
             </div>
         </nav>
-        <div className="w-full h-48 bg-gradient-to-r from-cyan-500 to-blue-500 relative">
-            <AiOutlineUser size={128} className="rounded-full bg-gray-100 border-4 absolute -bottom-16 left-6" />
+        <div onClick={() => setShowModal(true)} className="w-full h-48 bg-gradient-to-r from-cyan-500 to-blue-500 relative">
+            <img className="rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6" width={"128px"} src={`data:image/png;base64,${user.image}`}></img>
         </div>
         <div className={`flex justify-end`}>
             <div className="box-border h-fit mr-4 mt-3 p-2 border-2 rounded-full ">
-                <button><p>Set up profile</p></button>
+                <button onClick={() => setShowModal(true)}><p>Set up profile</p></button>
             </div>
         </div>
         <div className="flex justify-start mt-4 mb-4">
@@ -66,11 +69,15 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = (props: Profi
         <div>
             {posts.map(p => {
                 return <div>
-                    <img width={"250px"} src={`data:image/png;base64,${p.image}`}></img>
-                    {p.text}
+                    <PostCard post={p} user={user}></PostCard>
                 </div>
             })}
         </div>
+
+        {showModal ? (
+            <SetUpProfileModal setShowModal={setShowModal} />
+      ) : null}
+
     </div>);
 }
 

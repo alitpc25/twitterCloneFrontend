@@ -20,7 +20,8 @@ export default function MoreDropdownButton({children} : IProps) {
             username:null,
             userId:null,
             jwtToken:null,
-            loggedIn:false
+            loggedIn:false,
+            image:null
         }))
     }
 
