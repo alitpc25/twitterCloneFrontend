@@ -6,10 +6,10 @@ import axios from "axios";
 import { useAppSelector } from "../redux/hooks";
 
 interface PostInputFieldProps {
-
+    setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const PostInputField: FunctionComponent<PostInputFieldProps> = () => {
+const PostInputField: FunctionComponent<PostInputFieldProps> = ({setShowModal}: PostInputFieldProps) => {
 
     const [image, setImage] = useState<string>();
     const [text, setText] = useState<string>("");
@@ -33,9 +33,13 @@ const PostInputField: FunctionComponent<PostInputFieldProps> = () => {
         let data = {
             text: text,
             image: imageFile,
-            username: user.username
         }
-        axios.post('/api/v1/posts', data, {
+        if(text == "" && imageFile == undefined) {
+            console.log("you should add something to share.")
+            return;
+        }
+
+        axios.post(`/api/v1/posts?userId=${user.userId}`, data, {
             headers: {
               'Authorization': `Bearer ${user.jwtToken}`,
               "Content-type": "multipart/form-data",
@@ -47,6 +51,9 @@ const PostInputField: FunctionComponent<PostInputFieldProps> = () => {
         }).catch((e) => {
             console.log(e);
         })
+        if(setShowModal) {
+            setShowModal(false)
+        }
     }
  
     return (
@@ -55,11 +62,11 @@ const PostInputField: FunctionComponent<PostInputFieldProps> = () => {
                 <label htmlFor="text" className="mb-2 text-sm font-medium text-gray-900 sr-only">Tweet</label>
                 <div className="relative flex flex-row">
                     <div className="inset-y-0 left-0 flex items-start mt-4 pl-3 pointer-events-none">
-                        <img className="rounded-full" width={"50px"} src={`data:image/png;base64,${user.image}`}></img>
+                        <img className="rounded-full" style={{objectFit:"contain", width:"50px", height:"50px"}} src={`data:image/png;base64,${user.image}`}></img>
                     </div>
                     <div className="w-full flex flex-col">
                         {image && 
-                        <img alt="not found" width={"250px"} src={image} />}
+                        <img alt="not found" style={{objectFit:"contain", width:"250px", height:"250px"}} src={image} />}
                         <textarea value={text} onChange={handleTextareaChange} id="text" className="mt-2 border-b-2 resize-y w-full h-32 p-4 pl-10 text-sm text-gray-900" placeholder="What's happening?" required />
                         <div>
                             <label htmlFor="file-upload" className="custom-file-upload">

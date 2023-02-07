@@ -38,7 +38,7 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = (props: Profi
     }, [])
     
 
-    return (<div className="">
+    return (<div>
         <nav className="h-14 items-center bg-white w-full px-1.5 py-2 dark:bg-gray-900 flex flex-row z-20 border-b border-gray-200 dark:border-gray-600">
             <div>
                 <BsArrowLeft className="ml-4" size={24} />
@@ -51,16 +51,14 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = (props: Profi
                 </a>
             </div>
         </nav>
-        <div onClick={() => setShowModal(true)} className="w-full h-48 bg-gradient-to-r from-cyan-500 to-blue-500 relative">
-            <img className="rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6" width={"128px"} src={`data:image/png;base64,${user.image}`}></img>
+        <div onClick={() => setShowModal(true)} className="cursor-pointer w-full h-48 bg-gradient-to-r from-cyan-500 to-blue-500 relative">
+            <img className="rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6" style={{objectFit:"contain", width:"128px", height:"128px"}} src={`data:image/png;base64,${user.image}`}></img>
         </div>
         <div className={`flex justify-end`}>
-            <div className="box-border h-fit mr-4 mt-3 p-2 border-2 rounded-full ">
-                <button onClick={() => setShowModal(true)}><p>Set up profile</p></button>
-            </div>
+                <button className="box-border h-fit mr-4 mt-3 p-2 border-2 rounded-full " onClick={() => setShowModal(true)}><p>Set up profile</p></button>
         </div>
         <div className="flex justify-start mt-4 mb-4">
-            <p className="ml-4">{props.user.username}</p>
+            <p className="ml-4 font-bold">{props.user.username}</p>
         </div>
         <hr className="border-1"></hr>
         <div>

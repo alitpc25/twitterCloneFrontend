@@ -11,12 +11,16 @@ import { HiOutlineDotsCircleHorizontal } from "react-icons/hi"
 import { FiSettings } from "react-icons/fi"
 import MoreDropdownButton from './MoreDropdownButton';
 import { UserState } from '../redux/userSlice';
+import CreateTweetModal from './CreateTweetModal';
 
 export interface IGlobalLeftColProps {
     user: UserState
 }
 
 export default function GlobalLeftCol({user}: IGlobalLeftColProps) {
+
+    const [showModal, setShowModal] = React.useState(false);
+
     return (
         <div className='ml-32'>
             <GlobalLeftColBox icon={BsTwitter} text={null} routeTo="/"></GlobalLeftColBox>
@@ -31,9 +35,13 @@ export default function GlobalLeftCol({user}: IGlobalLeftColProps) {
                 <GlobalLeftColBox icon={HiOutlineDotsCircleHorizontal} text="More"></GlobalLeftColBox>
             </MoreDropdownButton>
 
-            <GlobalLeftColBox icon={FaFeatherAlt} text="Tweet"></GlobalLeftColBox>
+            <div onClick={() => setShowModal(true)}><GlobalLeftColBox icon={FaFeatherAlt} text="Tweet"></GlobalLeftColBox></div>
 
             <GlobalLeftColBox image={user.image} text={user.username} routeTo="/profile"></GlobalLeftColBox>
+
+            {showModal ? (
+            <CreateTweetModal setShowModal={setShowModal} />
+      ) : null}
         </div>
     );
 }
