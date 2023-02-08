@@ -5,6 +5,7 @@ import { useAppDispatch } from "../redux/hooks";
 import { updateUserInfo } from "../redux/userSlice";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { toastError, toastSuccess } from "../utils/toastMessages";
 
 interface RegisterProps {
     
@@ -34,10 +35,12 @@ const Register: FunctionComponent<RegisterProps> = () => {
             loggedIn: true,
             image: response.data.image
           }
+          toastSuccess("Successfully registered.");
           const resultOfAction = dispatch(updateUserInfo(userState))
           console.log(resultOfAction)
         })
         .catch(function (error) {
+          toastError(error);
           console.log(error);
         });
     }

@@ -4,6 +4,7 @@ import { useAppDispatch } from "../redux/hooks";
 import axios from "axios";
 import { updateUserInfo } from "../redux/userSlice";
 import { Link } from "react-router-dom";
+import { toastError, toastSuccess } from "../utils/toastMessages";
 
 interface LoginProps {
     
@@ -36,11 +37,13 @@ const Login: FunctionComponent<LoginProps> = () => {
             loggedIn: true,
             image: response.data.image
           }
+          toastSuccess("Successfully logged in.");
           const resultOfAction = dispatch(updateUserInfo(userState))
           console.log(resultOfAction)
         })
         .catch(function (error) {
           console.log(error);
+          toastError(error);
         });
     }
 

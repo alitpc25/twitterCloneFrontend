@@ -37,7 +37,7 @@ export default function GlobalLeftCol({user}: IGlobalLeftColProps) {
 
             <div onClick={() => setShowModal(true)}><GlobalLeftColBox icon={FaFeatherAlt} text="Tweet"></GlobalLeftColBox></div>
 
-            <GlobalLeftColBox image={user.image} text={user.username} routeTo="/profile"></GlobalLeftColBox>
+            <GlobalLeftColBox image={user.image} text={user.username} routeTo={`/profile/${user.username}`}></GlobalLeftColBox>
 
             {showModal ? (
             <CreateTweetModal setShowModal={setShowModal} />

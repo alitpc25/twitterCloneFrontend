@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { useAppDispatch } from '../redux/hooks'
 import { updateUserInfo } from '../redux/userSlice'
+import { toastSuccess } from '../utils/toastMessages'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
@@ -23,6 +24,7 @@ export default function MoreDropdownButton({children} : IProps) {
             loggedIn:false,
             image:null
         }))
+        toastSuccess("Successfully logged out.");
     }
 
     return (

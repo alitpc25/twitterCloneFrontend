@@ -5,6 +5,7 @@ import SetProfileImageStep from './SetProfileImageStep';
 import SetUsernameStep from './SetUsernameStep';
 import axios from 'axios';
 import { updateUserInfo } from '../redux/userSlice';
+import { toastError, toastSuccess } from '../utils/toastMessages';
 
 export interface ISetUpProfileProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -58,7 +59,9 @@ export default function SetUpProfile({ setShowModal }: ISetUpProfileProps) {
                 setNewUsername("")
                 setImage("")
                 setShowModal(false)
+                toastSuccess("Successfully updated.");
             }).catch((e) => {
+                toastError(e);
                 console.log(e);
             })
     }

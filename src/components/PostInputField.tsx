@@ -4,6 +4,7 @@ import "./PostInputField.css"
 import { useState } from "react"
 import axios from "axios";
 import { useAppSelector } from "../redux/hooks";
+import { toastError, toastSuccess } from "../utils/toastMessages";
 
 interface PostInputFieldProps {
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,8 +49,10 @@ const PostInputField: FunctionComponent<PostInputFieldProps> = ({setShowModal}: 
             console.log(res)
             setText("")
             setImage("")
+            toastSuccess("Successfully shared.");
         }).catch((e) => {
             console.log(e);
+            toastError(e);
         })
         if(setShowModal) {
             setShowModal(false)
