@@ -33,11 +33,10 @@ const Register: FunctionComponent<RegisterProps> = () => {
             userId: response.data.userId,
             jwtToken: response.data.token,
             loggedIn: true,
-            image: response.data.image
+            imageId: response.data.image
           }
           toastSuccess("Successfully registered.");
-          const resultOfAction = dispatch(updateUserInfo(userState))
-          console.log(resultOfAction)
+          dispatch(updateUserInfo(userState))
         })
         .catch(function (error) {
           toastError(error);

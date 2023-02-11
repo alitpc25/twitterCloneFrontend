@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { BsArrowLeft } from "react-icons/bs"
 import PostInputField from "../components/PostInputField";
 import axios from "axios";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import Post from "../models/Post";
 import PostCard from "../components/PostCard";
 import SetUpProfileModal from "../components/SetUpProfileModal";
@@ -11,6 +11,9 @@ import ViewedUser from "../models/ViewedUser";
 import moment from "moment";
 import LoadingComponent from "../components/LoadingComponent";
 import { useParams } from "react-router-dom";
+import { updateUserInfo } from "../redux/userSlice";
+import { toastError, toastSuccess } from "../utils/toastMessages";
+import { getDownloadURLImage } from "../firebase/firebaseGetDownloadUrl";
 
 interface ProfileInnerPageProps {
 }
@@ -18,6 +21,7 @@ interface ProfileInnerPageProps {
 const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
 
     const user = useAppSelector(state => state.user)
+    const dispatch = useAppDispatch()
 
     const { username } = useParams();
 
@@ -26,16 +30,36 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
     const [posts, setPosts] = useState<Post[]>()
     const [viewedUser, setViewedUser] = useState<ViewedUser>();
 
+    const [imageUrlViewedUser, setImageUrlViewedUser] = useState("");
+    const [imageUrlUser, setImageUrlUser] = useState("");
+
+    if(viewedUser?.imageId) {
+        getDownloadURLImage(viewedUser.imageId, setImageUrlViewedUser)
+    }
+
+    if(user.imageId) {
+        getDownloadURLImage(user.imageId, setImageUrlUser)
+    }
+
+
     const getUserByUsername = (username: string) => {
         axios.get(`/api/v1/users/user?username=${username}`, {
             headers: {
                 'Authorization': `Bearer ${user.jwtToken}`
             }
         }).then((res) => {
-            console.log(res.data);
             setViewedUser(res.data);
         }).catch((e) => {
             console.log(e);
+            if(e.response.status == 403) {
+                dispatch(updateUserInfo({
+                    username:null,
+                    userId:null,
+                    jwtToken:null,
+                    loggedIn:false,
+                    imageId:null
+                }))
+            }
         })
     }
 
@@ -46,10 +70,47 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
             }
         }).then((res) => {
             setPosts(res.data)
-            console.log(res.data);
         }).catch((e) => {
             console.log(e);
+            if(e.response.status == 403) {
+                dispatch(updateUserInfo({
+                    username:null,
+                    userId:null,
+                    jwtToken:null,
+                    loggedIn:false,
+                    imageId:null
+                }))
+            }
         })
+    }
+
+    const sendFollowRequest = () => {
+        if(viewedUser) {
+            axios.put(`/api/v1/users/follow`, 
+            {
+                sender: user.username,
+                receiver: viewedUser.username
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${user.jwtToken}`
+                }
+            }).then(() => {
+                toastSuccess("You are following " + viewedUser.username);
+            }).catch((e) => {
+                console.log(e);
+                if(e.response.status == 403) {
+                    dispatch(updateUserInfo({
+                        username:null,
+                        userId:null,
+                        jwtToken:null,
+                        loggedIn:false,
+                        imageId:null
+                    }))
+                }
+                toastError(e);
+            })
+        }
     }
 
     useEffect(() => {
@@ -69,24 +130,31 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
             <div>
                 <a href="/profile">
                     <div className="flex md:order-1 text-start  ">
-                        <p className="ml-2 text-xl font-bold ">{viewedUser.username}</p>
+                        <p className="ml-2 text-xl font-bold ">{user.username === viewedUser.username ? user.username : viewedUser.username}</p>
                     </div>
                 </a>
             </div>
         </nav>
         <div className="w-full h-48 bg-gradient-to-r from-cyan-500 to-blue-500 relative">
-            <img onClick={() => user.username == viewedUser.username ? setShowModal(true) : null} className={`rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6 ${viewedUser.username == user.username ? "cursor-pointer" : ""}`} style={{ objectFit: "contain", width: "128px", height: "128px" }} src={`data:image/png;base64,${viewedUser.image}`}></img>
+            {
+                user.username === viewedUser.username ?
+                <img onClick={() => setShowModal(true)} className={"rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6 cursor-pointer"} style={{ objectFit: "contain", width: "128px", height: "128px" }} src={imageUrlUser != "" ? imageUrlUser : "/avatar.jpg"}></img>
+                :
+                <img className={`rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6`} style={{ objectFit: "contain", width: "128px", height: "128px" }} src={imageUrlViewedUser != "" ? imageUrlViewedUser : "/avatar.jpg"}></img>
+            }
         </div>
         {
             viewedUser.username == user.username ?
                 <div className={`flex justify-end mr-4 mt-3`}>
                     <button className="box-border h-fit p-2 border-2 rounded-full " onClick={() => setShowModal(true)}><p>Set up profile</p></button>
                 </div>
-                : 
-                <div className="mt-20"></div>
+                :
+                <div className={`flex justify-end mr-4 mt-3`}>
+                    <button className="box-border h-fit p-2 border-2 rounded-full " onClick={sendFollowRequest}><p>Follow</p></button>
+                </div> 
         }
         <div className="flex flex-col items-start justify-start mt-4 mb-4">
-            <p className="ml-4 font-bold">{viewedUser.username}</p>
+            <p className="ml-4 font-bold">{user.username === viewedUser.username ? user.username : viewedUser.username}</p>
             <p className="ml-4">Joined at {moment(viewedUser?.createdDate).format('MMMM Do YYYY, h:mm:ss a')}</p>
         </div>
         <hr className="border-1"></hr>
@@ -100,9 +168,9 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
         <div>
             {
                 posts ?
-            posts.map(p => {
-                return <div>
-                    <PostCard post={p} user={viewedUser}></PostCard>
+            posts.map((p, i) => {
+                return <div key={i}>
+                    <PostCard key={i} post={p} user={user.username === viewedUser.username ? user : viewedUser}></PostCard>
                 </div>
             }) : 
                 <LoadingComponent />

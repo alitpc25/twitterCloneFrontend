@@ -17,14 +17,14 @@ export default function MoreDropdownButton({children} : IProps) {
     const dispatch = useAppDispatch()
 
     const logOutUser = () => {
+      toastSuccess("Successfully logged out.");
         dispatch(updateUserInfo({
             username:null,
             userId:null,
             jwtToken:null,
             loggedIn:false,
-            image:null
+            imageId:null
         }))
-        toastSuccess("Successfully logged out.");
     }
 
     return (

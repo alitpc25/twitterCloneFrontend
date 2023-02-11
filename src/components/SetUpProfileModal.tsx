@@ -6,6 +6,9 @@ import SetUsernameStep from './SetUsernameStep';
 import axios from 'axios';
 import { updateUserInfo } from '../redux/userSlice';
 import { toastError, toastSuccess } from '../utils/toastMessages';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
+import { toast } from "react-toastify"
 
 export interface ISetUpProfileProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,17 +18,18 @@ export default function SetUpProfile({ setShowModal }: ISetUpProfileProps) {
 
     const user = useAppSelector(state => state.user)
 
-    const [image, setImage] = useState<string | null>(user.image);
     const [newUsername, setNewUsername] = useState<string | null>(user.username);
     const [imageFile, setImageFile] = useState<File>();
 
     const dispatch = useAppDispatch()
 
+    //Firebase 
+    const storage = getStorage();
+
     const [step, setStep] = useState<number>(1);
 
     const handleImageInput = (e: React.FormEvent<HTMLInputElement>) => {
         if (e.currentTarget.files) {
-            setImage(URL.createObjectURL(e.currentTarget.files[0]));
             setImageFile(e.currentTarget.files[0])
         }
     }
@@ -36,32 +40,54 @@ export default function SetUpProfile({ setShowModal }: ISetUpProfileProps) {
 
     const handleUpdateUser = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
+        //Firebase file upload : imageFile
+        let imageId = null;
+        if (imageFile != undefined) {
+            imageId = uuidv4();
+            const storageRef = ref(storage, imageId);
+            const uploadBytesPromise = uploadBytes(storageRef, imageFile).then((snapshot) => {
+                console.log(snapshot);
+            });
+            toast.promise(
+                uploadBytesPromise,
+                {
+                  pending: 'Sharing post...',
+                  error: 'An error occurred'
+                }
+            )
+        }
+
         let data = {
             newUsername: newUsername,
-            image: imageFile,
-            username: user.username
+            username: user.username,
+            imageId: imageId
         }
-        axios.post(`/api/v1/users/${user.userId}`, data, {
+        axios.put(`/api/v1/users/${user.userId}`, data, {
             headers: {
                 'Authorization': `Bearer ${user.jwtToken}`,
-                "Content-type": "multipart/form-data",
             }
-        })
-            .then((response) => {
-                console.log(response)
+        }).then((response) => {
                 dispatch(updateUserInfo({
                     username: response.data.username,
                     userId: user.userId,
                     jwtToken: user.jwtToken,
                     loggedIn: true,
-                    image: response.data.image
+                    imageId: response.data.imageId
                 }))
                 setNewUsername("")
-                setImage("")
                 setShowModal(false)
                 toastSuccess("Successfully updated.");
             }).catch((e) => {
                 toastError(e);
+                if(e.response.status == 403) {
+                    dispatch(updateUserInfo({
+                        username:null,
+                        userId:null,
+                        jwtToken:null,
+                        loggedIn:false,
+                        imageId:null
+                    }))
+                }
                 console.log(e);
             })
     }
@@ -101,7 +127,7 @@ export default function SetUpProfile({ setShowModal }: ISetUpProfileProps) {
                         <div className='w-[500px] h-[500px]'>
                             {
                                 {
-                                    1: <SetProfileImageStep image={image} handleImageInput={handleImageInput} />,
+                                    1: <SetProfileImageStep imageId={user.imageId} handleImageInput={handleImageInput} />,
                                     2: <SetUsernameStep username={newUsername} handleInputChange={handleInputChange} />,
                                     3: <div className="space-y-8 flex flex-col items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                                         <p className='text-3xl font-bold mt-4'>Save your changes.</p>

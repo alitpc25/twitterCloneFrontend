@@ -22,16 +22,16 @@ function App() {
 
   if (!user.loggedIn) {
     return (
+      <BrowserRouter>
       <div className="App">
         <ToastContainer />
-        <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<Login />} />
           </Routes>
-        </BrowserRouter>
       </div>
+      </BrowserRouter>
     )
   }
 

@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ViewedUser from '../models/ViewedUser';
 import SearchCard from '../components/SearchCard';
 import LoadingComponent from '../components/LoadingComponent';
+import { updateUserInfo } from '../redux/userSlice';
 
 export interface ISearchPageProps {
 }
@@ -14,6 +15,10 @@ export default function SearchPage () {
     const { searchKey } = useParams();
 
     const user = useAppSelector(state => state.user)
+    const followings = useAppSelector(state => state.followings);
+
+    const dispatch = useAppDispatch();
+
     const [searchResult, setSearchResult] = useState<ViewedUser[]>();
 
     const searchByUsername = (searchKey: string) => {
@@ -22,10 +27,18 @@ export default function SearchPage () {
                 'Authorization': `Bearer ${user.jwtToken}`
             }
         }).then((res) => {
-            console.log(res.data);
             setSearchResult(res.data.content);
         }).catch((e) => {
             console.log(e);
+            if(e.response.status == 403) {
+                dispatch(updateUserInfo({
+                    username:null,
+                    userId:null,
+                    jwtToken:null,
+                    loggedIn:false,
+                    imageId:null
+                }))
+            }
         })
     }
 
@@ -33,14 +46,16 @@ export default function SearchPage () {
         if(searchKey) {
             searchByUsername(searchKey);
         }
-    }, [])
+    }, [searchKey])
     
 
   return (
     <div>
       {
         searchResult ? 
-      searchResult?.map(data => <SearchCard data={data}/>)
+        searchResult.filter(data => data.username != user.username).map((data, i) => {
+            return <SearchCard key={i} data={data} isFollowed={followings.followings?.map(f => f.username)?.includes(data.username)} />
+        })
         : <LoadingComponent />
     }
     </div>

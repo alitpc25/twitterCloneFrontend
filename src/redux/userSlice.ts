@@ -5,7 +5,7 @@ export interface UserState {
   userId: string | null,
   jwtToken: string | null,
   loggedIn: boolean,
-  image: string | null
+  imageId: string | null
 }
 
 // Define the initial state using that type
@@ -14,7 +14,7 @@ const initialState: UserState = {
     userId: null,
     jwtToken: null,
     loggedIn: false,
-    image: null
+    imageId: null
 }
 
 export const userSlice = createSlice({
@@ -28,7 +28,7 @@ export const userSlice = createSlice({
       state.userId = action.payload.userId
       state.jwtToken = action.payload.jwtToken
       state.loggedIn = action.payload.loggedIn
-      state.image = action.payload.image
+      state.imageId = action.payload.imageId
     }
   }
 })

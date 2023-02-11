@@ -1,11 +1,18 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import { getDownloadURLImage } from '../firebase/firebaseGetDownloadUrl';
 
 export interface ISetProfileImageStepProps {
-  image: string | null,
+  imageId: string | null,
   handleImageInput: (e: React.FormEvent<HTMLInputElement>) => void
 }
 
-export default function SetProfileImageStep({ handleImageInput, image }: ISetProfileImageStepProps) {
+export default function SetProfileImageStep({ handleImageInput, imageId }: ISetProfileImageStepProps) {
+
+  const [imageUrlUser, setImageUrlUser] = useState("");
+
+  if(imageId) {
+      getDownloadURLImage(imageId, setImageUrlUser);
+  }
 
   return (
     <div>
@@ -18,10 +25,7 @@ export default function SetProfileImageStep({ handleImageInput, image }: ISetPro
           <label htmlFor="user-image-change" className="custom-file-upload">
             <div className="w-fit p-2 bg-gray-100 rounded-full m-2 cursor-pointer hover:bg-gray-200">
               {
-                image?.startsWith("blob") ? 
-                  <img style={{objectFit:"contain", width:"300px", height:"300px"}} className='rounded-full' src={image!}></img>
-                :
-                  <img style={{objectFit:"contain", width:"300px", height:"300px"}} className='rounded-full' src={`data:image/png;base64,${image}`}></img> 
+                <img style={{objectFit:"contain", width:"300px", height:"300px"}} className='rounded-full' src={imageUrlUser ? imageUrlUser : "/avatar.jpg"}></img> 
               }
             </div>
           </label>

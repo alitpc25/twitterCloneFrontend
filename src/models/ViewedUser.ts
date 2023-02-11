@@ -1,11 +1,10 @@
 export default class ViewedUser {
     username: string;
-    image: string;
-    createdDate: string;
+    imageId: string;
+    createdDate?: string;
     
-
-    constructor(image: string, username: string,  createdDate: string) {
-        this.image = image;
+    constructor(imageId: string, username: string,  createdDate?: string) {
+        this.imageId = imageId;
         this.username = username;
         this.createdDate = createdDate;
     }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import GlobalLeftColBox from './GlobalLeftColBox';
 import { BsTwitter } from 'react-icons/bs'
 import { TbHome2 } from 'react-icons/tb'
@@ -37,7 +37,7 @@ export default function GlobalLeftCol({user}: IGlobalLeftColProps) {
 
             <div onClick={() => setShowModal(true)}><GlobalLeftColBox icon={FaFeatherAlt} text="Tweet"></GlobalLeftColBox></div>
 
-            <GlobalLeftColBox image={user.image} text={user.username} routeTo={`/profile/${user.username}`}></GlobalLeftColBox>
+            <GlobalLeftColBox imageId={user.imageId} text={user.username} routeTo={`/profile/${user.username}`}></GlobalLeftColBox>
 
             {showModal ? (
             <CreateTweetModal setShowModal={setShowModal} />
