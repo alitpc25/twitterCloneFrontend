@@ -49,12 +49,12 @@ const Login: FunctionComponent<LoginProps> = () => {
             dispatch(loadFollowings(response.data))
           }).catch(function (error) {
             console.log(error);
-            toastError(error);
+            toastError(error.response.data);
           });
       })
       .catch(function (error) {
         console.log(error);
-        toastError(error);
+        toastError(error.response.data);
       });
   }
 

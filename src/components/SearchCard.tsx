@@ -46,7 +46,7 @@ export default function SearchCard(props: ISearchCardProps) {
                         imageId:null
                     }))
                 }
-                toastError(e);
+                toastError(e.response.data);
             })
     }
 
@@ -55,7 +55,7 @@ export default function SearchCard(props: ISearchCardProps) {
             <div className='flex justify-between items-center mt-3'>
                 <div onClick={() => navigate("/profile/"+props.data.username)} className='flex flex-row cursor-pointer items-center'>
                     <div className='ml-4'>
-                        <img className="rounded-full" style={{ objectFit: "contain", width: "50px", height: "50px" }} src={imageUrl}></img>
+                        <img className="rounded-full" style={{ objectFit: "contain", width: "50px", height: "50px" }} src={props.data.imageId !== null ? imageUrl : "/avatar.jpg"}></img>
                     </div>
                     <div className='flex flex-col ml-4'>
                         <div className='flex justify-start items-center space-x-4'>

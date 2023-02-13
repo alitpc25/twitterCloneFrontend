@@ -22,7 +22,7 @@ export default function PostCard(props: IPostCardProps) {
         <div>
             <div className='flex'>
                 <div className='mt-4 ml-4'>
-                    <img className="rounded-full" style={{ objectFit: "contain", width: "50px", height: "50px" }} src={imageUrlUser}></img>
+                    <img className="rounded-full" style={{ objectFit: "contain", width: "50px", height: "50px" }} src={imageUrlUser ? imageUrlUser : "/avatar.jpg"}></img>
                 </div>
                 <div className='flex flex-col ml-4 mt-4'>
                     <div className='flex justify-start items-center space-x-4'>

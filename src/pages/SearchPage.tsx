@@ -53,7 +53,7 @@ export default function SearchPage () {
     <div>
       {
         searchResult ? 
-        searchResult.filter(data => data.username != user.username).map((data, i) => {
+        searchResult.filter(data => data.username !== user.username).map((data, i) => {
             return <SearchCard key={i} data={data} isFollowed={followings.followings?.map(f => f.username)?.includes(data.username)} />
         })
         : <LoadingComponent />

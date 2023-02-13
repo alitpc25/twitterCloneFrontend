@@ -6,6 +6,7 @@ import { updateUserInfo } from "../redux/userSlice";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { toastError, toastSuccess } from "../utils/toastMessages";
+import { loadFollowings } from "../redux/followingsSlice";
 
 interface RegisterProps {
     
@@ -37,9 +38,10 @@ const Register: FunctionComponent<RegisterProps> = () => {
           }
           toastSuccess("Successfully registered.");
           dispatch(updateUserInfo(userState))
+          dispatch(loadFollowings([]));
         })
         .catch(function (error) {
-          toastError(error);
+          toastError(error.response.data);
           console.log(error);
         });
     }

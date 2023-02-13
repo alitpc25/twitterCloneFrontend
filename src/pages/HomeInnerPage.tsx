@@ -9,6 +9,7 @@ import { updateUserInfo } from "../redux/userSlice";
 import PostCard from "../components/PostCard";
 import ViewedUser from "../models/ViewedUser";
 import LoadingComponent from "../components/LoadingComponent";
+import GlobalRightColBox from "../components/GlobalRightColBox";
 
 interface HomeInnerPageProps {
 
@@ -30,36 +31,42 @@ const HomeInnerPage: FunctionComponent<HomeInnerPageProps> = () => {
             setFollowingsPosts(res.data)
         }).catch((e) => {
             console.log(e);
-            if(e.response.status == 403) {
+            if (e.response.status == 403) {
                 dispatch(updateUserInfo({
-                    username:null,
-                    userId:null,
-                    jwtToken:null,
-                    loggedIn:false,
-                    imageId:null
+                    username: null,
+                    userId: null,
+                    jwtToken: null,
+                    loggedIn: false,
+                    imageId: null
                 }))
             }
         })
     }
 
     useEffect(() => {
-      getFollowingsPosts();
+        getFollowingsPosts();
     }, [])
-    
 
-    return (<div>
-        <HomeFeedHeader></HomeFeedHeader>
-        <div className="mt-24">
-            <PostInputField></PostInputField>
+
+    return (
+    <div className="flex flex-row divide-x h-screen flex">
+        <div className="basis-2/3 flex-1 overflow-y-scroll mt-24">
+            <HomeFeedHeader></HomeFeedHeader>
+            <div>
+                <PostInputField></PostInputField>
+            </div>
+            <div>
+                {
+                    followingsPosts ?
+                        followingsPosts?.map((post, i) => {
+                            return <PostCard key={i} post={post} user={new ViewedUser(post.userImage, post.username)} />
+                        })
+                        : <LoadingComponent />
+                }
+            </div>
         </div>
-        <div>
-            {
-                followingsPosts ? 
-                followingsPosts?.map((post, i) => {
-                    return <PostCard key={i} post={post} user={new ViewedUser(post.userImage,post.username)} />
-                })
-                : <LoadingComponent />
-            }
+        <div id="rightPart" className="basis-1/3">
+            <GlobalRightColBox></GlobalRightColBox>
         </div>
     </div>
     );

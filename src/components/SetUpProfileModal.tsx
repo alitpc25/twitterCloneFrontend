@@ -78,7 +78,7 @@ export default function SetUpProfile({ setShowModal }: ISetUpProfileProps) {
                 setShowModal(false)
                 toastSuccess("Successfully updated.");
             }).catch((e) => {
-                toastError(e);
+                toastError(e.response.data);
                 if(e.response.status == 403) {
                     dispatch(updateUserInfo({
                         username:null,

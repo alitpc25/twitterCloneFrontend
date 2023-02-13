@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import { updateUserInfo } from "../redux/userSlice";
 import { toastError, toastSuccess } from "../utils/toastMessages";
 import { getDownloadURLImage } from "../firebase/firebaseGetDownloadUrl";
+import GlobalRightColBox from "../components/GlobalRightColBox";
 
 interface ProfileInnerPageProps {
 }
@@ -33,11 +34,11 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
     const [imageUrlViewedUser, setImageUrlViewedUser] = useState("");
     const [imageUrlUser, setImageUrlUser] = useState("");
 
-    if(viewedUser?.imageId) {
+    if (viewedUser?.imageId) {
         getDownloadURLImage(viewedUser.imageId, setImageUrlViewedUser)
     }
 
-    if(user.imageId) {
+    if (user.imageId) {
         getDownloadURLImage(user.imageId, setImageUrlUser)
     }
 
@@ -51,13 +52,13 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
             setViewedUser(res.data);
         }).catch((e) => {
             console.log(e);
-            if(e.response.status == 403) {
+            if (e.response.status == 403) {
                 dispatch(updateUserInfo({
-                    username:null,
-                    userId:null,
-                    jwtToken:null,
-                    loggedIn:false,
-                    imageId:null
+                    username: null,
+                    userId: null,
+                    jwtToken: null,
+                    loggedIn: false,
+                    imageId: null
                 }))
             }
         })
@@ -72,44 +73,44 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
             setPosts(res.data)
         }).catch((e) => {
             console.log(e);
-            if(e.response.status == 403) {
+            if (e.response.status == 403) {
                 dispatch(updateUserInfo({
-                    username:null,
-                    userId:null,
-                    jwtToken:null,
-                    loggedIn:false,
-                    imageId:null
+                    username: null,
+                    userId: null,
+                    jwtToken: null,
+                    loggedIn: false,
+                    imageId: null
                 }))
             }
         })
     }
 
     const sendFollowRequest = () => {
-        if(viewedUser) {
-            axios.put(`/api/v1/users/follow`, 
-            {
-                sender: user.username,
-                receiver: viewedUser.username
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${user.jwtToken}`
-                }
-            }).then(() => {
-                toastSuccess("You are following " + viewedUser.username);
-            }).catch((e) => {
-                console.log(e);
-                if(e.response.status == 403) {
-                    dispatch(updateUserInfo({
-                        username:null,
-                        userId:null,
-                        jwtToken:null,
-                        loggedIn:false,
-                        imageId:null
-                    }))
-                }
-                toastError(e);
-            })
+        if (viewedUser) {
+            axios.put(`/api/v1/users/follow`,
+                {
+                    sender: user.username,
+                    receiver: viewedUser.username
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${user.jwtToken}`
+                    }
+                }).then(() => {
+                    toastSuccess("You are following " + viewedUser.username);
+                }).catch((e) => {
+                    console.log(e);
+                    if (e.response.status == 403) {
+                        dispatch(updateUserInfo({
+                            username: null,
+                            userId: null,
+                            jwtToken: null,
+                            loggedIn: false,
+                            imageId: null
+                        }))
+                    }
+                    toastError(e.response.data);
+                })
         }
     }
 
@@ -122,66 +123,72 @@ const ProfileInnerPage: FunctionComponent<ProfileInnerPageProps> = () => {
         <LoadingComponent />
     );
 
-    return (<div>
-        <nav className="h-14 items-center bg-white w-full px-1.5 py-2 dark:bg-gray-900 flex flex-row z-20 border-b border-gray-200 dark:border-gray-600">
-            <div>
-                <BsArrowLeft className="ml-4" size={24} />
-            </div>
-            <div>
-                <a href="/profile">
-                    <div className="flex md:order-1 text-start  ">
-                        <p className="ml-2 text-xl font-bold ">{user.username === viewedUser.username ? user.username : viewedUser.username}</p>
+    return (
+        <div className="flex flex-row divide-x h-screen flex">
+            <div className="basis-2/3 flex-1 overflow-y-scroll">
+                <nav className="h-14 items-center bg-white w-full px-1.5 py-2 dark:bg-gray-900 flex flex-row z-20 border-b border-gray-200 dark:border-gray-600">
+                    <div>
+                        <BsArrowLeft className="ml-4" size={24} />
                     </div>
-                </a>
-            </div>
-        </nav>
-        <div className="w-full h-48 bg-gradient-to-r from-cyan-500 to-blue-500 relative">
-            {
-                user.username === viewedUser.username ?
-                <img onClick={() => setShowModal(true)} className={"rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6 cursor-pointer"} style={{ objectFit: "contain", width: "128px", height: "128px" }} src={imageUrlUser != "" ? imageUrlUser : "/avatar.jpg"}></img>
-                :
-                <img className={`rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6`} style={{ objectFit: "contain", width: "128px", height: "128px" }} src={imageUrlViewedUser != "" ? imageUrlViewedUser : "/avatar.jpg"}></img>
-            }
-        </div>
-        {
-            viewedUser.username == user.username ?
-                <div className={`flex justify-end mr-4 mt-3`}>
-                    <button className="box-border h-fit p-2 border-2 rounded-full " onClick={() => setShowModal(true)}><p>Set up profile</p></button>
+                    <div>
+                        <a href="/profile">
+                            <div className="flex md:order-1 text-start  ">
+                                <p className="ml-2 text-xl font-bold ">{user.username === viewedUser.username ? user.username : viewedUser.username}</p>
+                            </div>
+                        </a>
+                    </div>
+                </nav>
+                <div className="w-full h-48 bg-gradient-to-r from-cyan-500 to-blue-500 relative">
+                    {
+                        user.username === viewedUser.username ?
+                            <img onClick={() => setShowModal(true)} className={"rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6 cursor-pointer"} style={{ objectFit: "contain", width: "128px", height: "128px" }} src={imageUrlUser != "" ? imageUrlUser : "/avatar.jpg"}></img>
+                            :
+                            <img className={`rounded-full bg-gray-100 border-2 absolute -bottom-16 left-6`} style={{ objectFit: "contain", width: "128px", height: "128px" }} src={imageUrlViewedUser != "" ? imageUrlViewedUser : "/avatar.jpg"}></img>
+                    }
                 </div>
-                :
-                <div className={`flex justify-end mr-4 mt-3`}>
-                    <button className="box-border h-fit p-2 border-2 rounded-full " onClick={sendFollowRequest}><p>Follow</p></button>
-                </div> 
-        }
-        <div className="flex flex-col items-start justify-start mt-4 mb-4">
-            <p className="ml-4 font-bold">{user.username === viewedUser.username ? user.username : viewedUser.username}</p>
-            <p className="ml-4">Joined at {moment(viewedUser?.createdDate).format('MMMM Do YYYY, h:mm:ss a')}</p>
-        </div>
-        <hr className="border-1"></hr>
-        {
-            viewedUser.username == user.username ?
+                {
+                    viewedUser.username == user.username ?
+                        <div className={`flex justify-end mr-4 mt-3`}>
+                            <button className="box-border h-fit p-2 border-2 rounded-full " onClick={() => setShowModal(true)}><p>Set up profile</p></button>
+                        </div>
+                        :
+                        <div className={`flex justify-end mr-4 mt-3`}>
+                            <button className="box-border h-fit p-2 border-2 rounded-full " onClick={sendFollowRequest}><p>Follow</p></button>
+                        </div>
+                }
+                <div className="flex flex-col items-start justify-start mt-4 mb-4">
+                    <p className="ml-4 font-bold">{user.username === viewedUser.username ? user.username : viewedUser.username}</p>
+                    <p className="ml-4">Joined at {moment(viewedUser?.createdDate).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                </div>
+                <hr className="border-1"></hr>
+                {
+                    viewedUser.username == user.username ?
+                        <div>
+                            <PostInputField></PostInputField>
+                        </div>
+                        : null
+                }
                 <div>
-                    <PostInputField></PostInputField>
+                    {
+                        posts ?
+                            posts.map((p, i) => {
+                                return <div key={i}>
+                                    <PostCard key={i} post={p} user={user.username === viewedUser.username ? user : viewedUser}></PostCard>
+                                </div>
+                            }) :
+                            <LoadingComponent />
+                    }
                 </div>
-                : null
-        }
-        <div>
-            {
-                posts ?
-            posts.map((p, i) => {
-                return <div key={i}>
-                    <PostCard key={i} post={p} user={user.username === viewedUser.username ? user : viewedUser}></PostCard>
-                </div>
-            }) : 
-                <LoadingComponent />
-            }
-        </div>
 
-        {showModal ? (
-            <SetUpProfileModal setShowModal={setShowModal} />
-        ) : null}
+                {showModal ? (
+                    <SetUpProfileModal setShowModal={setShowModal} />
+                ) : null}
 
-    </div>);
+            </div>
+            <div id="rightPart" className="basis-1/3">
+                <GlobalRightColBox></GlobalRightColBox>
+            </div>
+        </div>);
 }
 
 export default ProfileInnerPage;

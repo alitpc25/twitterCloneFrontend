@@ -80,7 +80,7 @@ const PostInputField: FunctionComponent<PostInputFieldProps> = ({ setShowModal }
                     toastSuccess("Successfully shared.");
                 }).catch((e) => {
                     console.log(e);
-                    toastError(e);
+                    toastError(e.response.data);
                     if (e.response.status == 403) {
                         dispatch(updateUserInfo({
                             username: null,
